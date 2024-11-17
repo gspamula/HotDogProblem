@@ -1,0 +1,33 @@
+import math
+import itertools
+
+# Function to calculate distance between two points
+def distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+# Data setup
+intersections = [(4, 6), (8, 6), (8, 5), (4, 2), (2, 2)]
+dormitories = [(1, 6), (8, 6), (8, 5), (4, 2), (2, 2)]
+weights = {(1, 6): 200, (8, 6): 300, (8, 5): 300, (4, 2): 100, (2, 2): 100}
+
+# Initialize best solution variables
+best_distance_possible = float('inf')  # Set to a large number initially
+best_solution = []
+
+# Brute force over all combinations of two stands
+for stand1, stand2 in itertools.combinations(intersections, 2):
+    total_distance = 0
+    for dorm in dormitories:
+        # Find the nearest stand for each dorm
+        dist_to_nearest = min(distance(dorm, stand1), distance(dorm, stand2))
+        total_distance += weights[dorm] * dist_to_nearest
+    # Update the best solution if this one is better
+    if total_distance < best_distance_possible:
+        best_distance_possible = total_distance
+        best_solution = (stand1, stand2)
+
+# Print results
+print("Best locations:", best_solution)
+print("Minimum total distance:", best_distance_possible)
+
+
